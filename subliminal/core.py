@@ -178,7 +178,7 @@ class ProviderPool(object):
         return True
 
     def download_best_subtitles(self, subtitles, video, languages, min_score=0, hearing_impaired=False, only_one=False,
-                                compute_score=None):
+                                compute_score=None, offset=1):
         """Download the best matching subtitles.
 
         :param subtitles: the subtitles to use.
@@ -201,6 +201,8 @@ class ProviderPool(object):
         # sort subtitles by score
         scored_subtitles = sorted([(s, compute_score(s, video, hearing_impaired=hearing_impaired))
                                   for s in subtitles], key=operator.itemgetter(1), reverse=True)
+
+        scored_subtitles = list(scored_subtitles)[offset-1:]
 
         # download best subtitles, falling back on the next on error
         downloaded_subtitles = []
